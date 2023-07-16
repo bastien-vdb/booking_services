@@ -12,7 +12,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (!process.env.STRIPE_WEBHOOK_SECRET) throw new Error("Stripe webhook secret key is not defined");
 
-  console.log('la key!!!!')
+  console.log('step 1')
+
+  const signature = req.headers["stripe-signature"];
+    if (signature === undefined) throw new Error("Stripe signature is not defined");
+    const webhookEvent = stripe.webhooks.constructEvent(req.body, signature, process.env.STRIPE_WEBHOOK_SECRET);
+
+  console.log('step 2!', signature, webhookEvent)
 
   res.status(200).json("La route fonctionne !");
 }
