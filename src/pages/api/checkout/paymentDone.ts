@@ -15,7 +15,7 @@ if (!process.env.STRIPE_SECRET_KEY) throw new Error("Stripe secret key is not de
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: "2022-11-15",
 });
-    res.status(200).json('La route fonctionne');
+    res.status(200).json('La route fonctionne !!');
   const event = req.body;
 
   if (!process.env.STRIPE_WEBHOOK_SECRET) throw new Error("Stripe webhook secret key is not defined");
