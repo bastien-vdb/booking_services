@@ -6,7 +6,7 @@ import { prisma } from "@/db/prisma";
 
 if (!process.env.GITHUB_ID || !process.env.GITHUB_SECRET) {
   throw new Error(
-    'Please define the GITHUB_ID and GITHUB_SECRET environment variables inside .env variables'
+    'Please define the GITHUB_ID and GITHUB_SECRET environment variables inside .env variables !'
   );
 }
 
