@@ -1,7 +1,7 @@
 import fetcher from "@/lib/fetcher";
 import { Service } from "@prisma/client";
 
-const handleDeleteService = async (service: Service, setServices: React.Dispatch<React.SetStateAction<Service[]>>) => {
+const handleDeleteService = async (service: Pick<Service, 'id'>, setServices: React.Dispatch<React.SetStateAction<Service[]>>) => {
   try {
     const result =  await fetcher(`${process.env.HOST}/api/admin/services/deleteService`, "DELETE", { service });
     setServices(result);
