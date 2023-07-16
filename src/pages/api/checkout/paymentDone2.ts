@@ -1,6 +1,12 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { Stripe } from "stripe";
 
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (!process.env.STRIPE_SECRET_KEY) throw new Error("Stripe secret key is not defined");
 
