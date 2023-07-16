@@ -1,12 +1,12 @@
-import { prisma } from "@/db/prisma";
+import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/db/prisma';
 
-const getServerTable = async(table:keyof typeof prisma) =>{
-    try {
-        return await prisma[table].findMany();
-    }
-    catch(error:unknown) {
-        throw new    Error("cannot get newList");
-    }
+const getServerTable = async (table: keyof PrismaClient<any>) => {
+  try {
+    return await (prisma[table] as any).findMany();
+  } catch (error: unknown) {
+    throw new Error('Cannot get newList');
+  }
 };
 
 export default getServerTable;
