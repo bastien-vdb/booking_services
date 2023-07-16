@@ -1,6 +1,12 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { Stripe } from "stripe";
 
+export const config = {
+    api: {
+      bodyParser: false,
+    },
+  };
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     // Initialize Stripe with your secret key
