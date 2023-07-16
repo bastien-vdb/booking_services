@@ -9,5 +9,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   });
 
   const event = req.body;
+
+  if (!process.env.STRIPE_WEBHOOK_SECRET) throw new Error("Stripe webhook secret key is not defined");
+
   res.status(200).json("La route fonctionne");
 }
