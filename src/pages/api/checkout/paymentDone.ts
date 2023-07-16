@@ -9,6 +9,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 });
 
 export default async function webhookHandler(req: NextApiRequest, res: NextApiResponse) {
+    res.status(200).send('La route fonctionne');
   const event = req.body;
 
   if (!process.env.STRIPE_WEBHOOK_SECRET) throw new Error("Stripe webhook secret key is not defined");
