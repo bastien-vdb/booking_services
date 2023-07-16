@@ -14,13 +14,16 @@ export default async function webhookHandler(
 ) {
   const event = req.body;
 
+  if (!process.env.STRIPE_WEBHOOK_SECRET) throw new Error("Stripe webhook secret key is not defined");
+
   try {
     // Verify the webhook event using your webhook signing secret
     const signature = req.headers["stripe-signature"];
+    if (signature === undefined) throw new Error("Stripe signature is not defined");
     const webhookEvent = stripe.webhooks.constructEvent(
       req.body,
-      signature || "",
-      process.env.STRIPE_WEBHOOK_SECRET || ""
+      signature,
+      process.env.STRIPE_WEBHOOK_SECRET
     );
 
     // Handle the specific event type
