@@ -32,7 +32,7 @@ export default function Home({ periods, booking, service }: HomeProps) {
         <main className='m-2 flex flex-col justify-center items-center'>
           {!selectedService ? <SelectService setSelectService={setSelectService} service={service} />
             :
-            <MainCalendar selectedService={selectedService} setSelectService={setSelectService} periods={periods} bookings={bookings} setBookings={setBookings} />
+            <MainCalendar selectedService={selectedService} setSelectService={setSelectService} periods={periods} bookings={bookings} />
           }
         </main>
       </div>
