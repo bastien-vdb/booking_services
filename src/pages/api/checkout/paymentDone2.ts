@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (signature === undefined) throw new Error("Stripe signature is not defined");
   const webhookEvent = stripe.webhooks.constructEvent(rawBody, signature, process.env.STRIPE_WEBHOOK_SECRET);
 
-  // console.log("step 2", webhookEvent);
+  console.log("step 2", webhookEvent);
 
   res.status(200).send("Webhook received");
 }
