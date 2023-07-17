@@ -13,6 +13,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2022-11-15" });
 
   const session = await stripe.checkout.sessions.create({
+    metadata: {
+        productId: stripePriceId,
+        userId: 'mon gars S',
+        // Additional metadata fields as needed
+      },
     line_items: [
       {
         price: stripePriceId,
