@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { Stripe } from "stripe";
+import getRawBody from 'raw-body';
 
 export const config = {
     api: {
@@ -17,6 +18,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
 });
     res.status(200).json('La route fonctionne !!');
   const event = req.body;
+  const rawBody = await getRawBody(req);
 
   if (!process.env.STRIPE_WEBHOOK_SECRET) throw new Error("Stripe webhook secret key is not defined");
 
@@ -24,7 +26,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
     // Verify the webhook event using your webhook signing secret
     const signature = req.headers["stripe-signature"];
     if (signature === undefined) throw new Error("Stripe signature is not defined");
-    const webhookEvent = stripe.webhooks.constructEvent(req.body, signature, process.env.STRIPE_WEBHOOK_SECRET);
+    const webhookEvent = stripe.webhooks.constructEvent(rawBody, signature, process.env.STRIPE_WEBHOOK_SECRET);
 
     // Handle the specific event type
     switch (webhookEvent.type) {
