@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { Stripe } from "stripe";
+import getRawBody from "raw-body";
 
 export const config = {
   api: {
@@ -15,6 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   });
 
   const event = req.body;
+  const rawBody = await getRawBody(req);
 
   if (!process.env.STRIPE_WEBHOOK_SECRET) throw new Error("Stripe webhook secret key is not defined");
 
@@ -23,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const signature = req.headers["stripe-signature"];
   console.log("signature", signature);
   if (signature === undefined) throw new Error("Stripe signature is not defined");
-  const webhookEvent = stripe.webhooks.constructEvent(req.body, signature, process.env.STRIPE_WEBHOOK_SECRET);
+  const webhookEvent = stripe.webhooks.constructEvent(rawBody, signature, process.env.STRIPE_WEBHOOK_SECRET);
 
   // console.log("step 2", webhookEvent);
 
