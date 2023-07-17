@@ -30,11 +30,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // Handle the specific event type
   switch (webhookEvent.type) {
     case "checkout.session.completed":
-      const session = webhookEvent.data.object;
+      const session = webhookEvent.data.object as any;
       // Payment was successful, you can retrieve relevant details from the session object
 
       console.log("webhookEvent", webhookEvent);
-      console.log("Session", session);
+      const { slot, serviceId, stripePriceId, userId } = session.metadata;
+      console.log("slot", slot);
+      console.log("serviceId", serviceId);
+      console.log("stripePriceId", stripePriceId);
+      console.log("userId", userId);
+      
       // Perform any necessary actions (e.g., update booking status, send confirmation email, etc.)
       break;
     default:
