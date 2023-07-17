@@ -6,17 +6,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (!process.env.STRIPE_SECRET_KEY) return res.status(400).json("Stripe secret key is not defined");
 
-  const { stripePriceId } = req.body;
-
-  console.log("Salut toi!", stripePriceId); 
+  const { stripePriceId, slot, userId, serviceId } = req.body;
 
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2022-11-15" });
 
   const session = await stripe.checkout.sessions.create({
     metadata: {
-        productId: stripePriceId,
-        userId: 'mon gars S',
-        // Additional metadata fields as needed
+        slot,
+        serviceId,
+        stripePriceId,
+        userId,
       },
     line_items: [
       {

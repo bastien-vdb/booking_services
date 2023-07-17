@@ -27,12 +27,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (signature === undefined) throw new Error("Stripe signature is not defined");
   const webhookEvent = stripe.webhooks.constructEvent(rawBody, signature, process.env.STRIPE_WEBHOOK_SECRET);
 
-   // Handle the specific event type
-   switch (webhookEvent.type) {
+  // Handle the specific event type
+  switch (webhookEvent.type) {
     case "checkout.session.completed":
       const session = webhookEvent.data.object;
       // Payment was successful, you can retrieve relevant details from the session object
-      console.log("Payment completed:", session);
+
+      console.log("webhookEvent", webhookEvent);
+      console.log("Session", session);
       // Perform any necessary actions (e.g., update booking status, send confirmation email, etc.)
       break;
     default:
