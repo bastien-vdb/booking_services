@@ -16,7 +16,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     apiVersion: "2022-11-15",
   });
 
-  const event = req.body;
   const rawBody = await getRawBody(req);
 
   if (!process.env.STRIPE_WEBHOOK_SECRET) throw new Error("Stripe webhook secret key is not defined");
