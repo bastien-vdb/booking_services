@@ -7,6 +7,12 @@ import SelectService from '@/components/home/SelectService';
 import { useSession, signIn, signOut } from "next-auth/react";
 import Logout from '@/components/auth/Logout';
 import Login from '@/components/auth/Login';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/states/store';
+import { setBookings } from '@/states/admin/slices/bookingsSlice';
+import { setServices } from '@/states/admin/slices/servicesSlice';
+import { setPeriods } from '@/states/home/slices/periodsSlice';
+import { useAppSelector } from '@/states/store';
 
 type HomeProps = {
   periods: Periods[];
@@ -15,8 +21,12 @@ type HomeProps = {
 };
 
 export default function Home({ periods, booking, service }: HomeProps) {
-  const [bookings, setBookings] = useState<Booking[]>(booking);
-  const [selectedService, setSelectService] = useState<Service | null>(null);
+  const dispatch: AppDispatch = useDispatch();
+  dispatch(setBookings(booking));
+  dispatch(setServices(service));
+  dispatch(setPeriods(periods));
+
+const {selectedService} = useAppSelector(state=>state.combineHomeReducers);
 
   const { data: session, status } = useSession();
 
@@ -30,9 +40,9 @@ export default function Home({ periods, booking, service }: HomeProps) {
         <Logout session={session} signOut={signOut} />
         <Link className='p-2 m-2 rounded-bl-2xl bg-red-100 absolute top-0 right-0' href="/admin">Admin</Link>
         <main className='m-2 flex flex-col justify-center items-center'>
-          {!selectedService ? <SelectService setSelectService={setSelectService} service={service} />
+          {!selectedService ? <SelectService />
             :
-            <MainCalendar selectedService={selectedService} setSelectService={setSelectService} periods={periods} bookings={bookings} />
+            <MainCalendar />
           }
         </main>
       </div>

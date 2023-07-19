@@ -1,17 +1,18 @@
 import { Service } from '@prisma/client';
 import { useDispatch, useSelector } from 'react-redux';
+import {AppDispatch} from '@/states/store';
+import handleCreateService from '@/functions/admin/services/handleCreateService';
+import handleDeleteService from '@/functions/admin/services/handleDeleteService';
+import {useAppSelector} from '@/states/store';
+import { setServices } from '@/states/admin/slices/servicesSlice';
 
-type ManageServiceProps = {
-    handleCreateService: (e: any, setServices: React.Dispatch<React.SetStateAction<Service[]>>) => void;
-    handleDeleteService: (id: Pick<Service, 'id'>, dispatch: React.Dispatch<React.SetStateAction<Service[]>>) => void;
-}
-const ManageService = ({ handleCreateService, handleDeleteService }: ManageServiceProps) => {
+const ManageService = () => {
 
-    const dispatch:any = useDispatch();
-    const services = useSelector((state:any)=>state.services)
+    const dispatch:AppDispatch = useDispatch();
+    const services = useAppSelector((state)=>state.combineAdminReducers.services)
     return (<div className='Service border p-2'>
         <h1>Create Service</h1>
-        <form onSubmit={(e) => handleCreateService(e, dispatch)}>
+        <form onSubmit={async(e) => dispatch(setServices(await handleCreateService(e)))}>
             <label htmlFor="name">Name</label> <br />
             <input className='border' type="text" name="name" id="name" /> <br />
             <label htmlFor="price">Price</label> <br />
@@ -21,7 +22,7 @@ const ManageService = ({ handleCreateService, handleDeleteService }: ManageServi
 
         <ul>
             {services && services.map((service:Service) => (
-                <li key={service.id}><button className='border bg-gray-200 rounded-xl px-2' onClick={()=>handleDeleteService(service, dispatch)}
+                <li key={service.id}><button className='border bg-gray-200 rounded-xl px-2' onClick={async()=>dispatch(setServices(await handleDeleteService(service)))}
                 >X</button> {service.name} </li>
             ))
             }
