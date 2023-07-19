@@ -1,14 +1,14 @@
 import fetcher from "@/lib/fetcher";
-import { User } from "@prisma/client";
+import { setUsers } from "@/states/admin/slices/usersSlice";
 
-const handleCreateUser = async (e: any, setUsers: React.Dispatch<React.SetStateAction<User[]>>) => {
+const handleCreateUser = async (e: any, dispatch:any) => {
   e.preventDefault();
   const name = e.target.name.value;
   const email = e.target.email.value;
 
   try {
     const result = await fetcher(`${process.env.HOST}/api/admin/users/createUser`, "POST", { name, email });
-    setUsers(result);
+    dispatch(setUsers(result));
   } catch (error) {
     console.log(error);
   }

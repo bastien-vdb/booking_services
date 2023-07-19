@@ -8,8 +8,11 @@ import handleDeleteUser from '@/functions/admin/users/handleDeleteUser';
 import handleDeleteBooking from '@/functions/admin/bookings/handleDeleteBooking';
 import fetcher from '@/lib/fetcher';
 import { Service, User, Booking } from '@prisma/client';
-import { useState } from 'react';
 import Link from 'next/link';
+import { useDispatch, DispatchProp } from 'react-redux';
+import { setServices } from '@/states/admin/slices/servicesSlice';
+import {setBookings} from '@/states/admin/slices/bookingsSlice';
+import { setUsers } from '@/states/admin/slices/usersSlice';
 
 type AdminProps = {
   service: Service[];
@@ -18,17 +21,20 @@ type AdminProps = {
 }
 
 export default function Admin({ service, user, booking }: AdminProps) {
-  const [services, setServices] = useState<Service[]>(service);
-  const [users, setUsers] = useState<User[]>(user);
-  const [bookings, setBookings] = useState<Booking[]>(booking);
+
+const dispatch = useDispatch();
+
+dispatch(setServices(service));
+dispatch(setBookings(booking));
+dispatch(setUsers(user));
 
   return (
     <>
       <Link className='p-2 m-2 rounded-bl-2xl' href="/">Home</Link>
       <main>
-        <ManageService handleDeleteService={handleDeleteService} handleCreateService={handleCreateService} services={services} setServices={setServices} />
-        <ManageUser handleDeleteUser={handleDeleteUser} handleCreateUser={handleCreateUser} users={users} setUsers={setUsers} />
-        <ManageBooking handleDeleteBooking={handleDeleteBooking} bookings={bookings} setBookings={setBookings} />
+        <ManageService handleDeleteService={handleDeleteService} handleCreateService={handleCreateService} />
+        <ManageUser handleDeleteUser={handleDeleteUser} handleCreateUser={handleCreateUser} />
+        <ManageBooking handleDeleteBooking={handleDeleteBooking} />
       </main>
     </>
   )

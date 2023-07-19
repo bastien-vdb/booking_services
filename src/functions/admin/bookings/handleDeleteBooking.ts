@@ -1,10 +1,10 @@
 import fetcher from "@/lib/fetcher";
-import { Booking } from "@prisma/client";
+import {setBookings} from '@/states/admin/slices/bookingsSlice';
 
-const handleDeleteBooking = async (id: string, setBookings: React.Dispatch<React.SetStateAction<Booking[]>>) => {
+const handleDeleteBooking = async (id: string, dispatch: any) => {
   try {
     const response = await fetcher(`${process.env.HOST}/api/admin/bookings/deleteBooking`, "DELETE", { id });
-    setBookings(response);
+    dispatch(setBookings(response));
   } catch (error: unknown) {
     alert("user cannot be deleted");
   }
